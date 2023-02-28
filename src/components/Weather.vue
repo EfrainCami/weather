@@ -22,6 +22,13 @@
 import Card from "./Card.vue";
 import Info from "./Info.vue"
 import Search from "./Search.vue";
+import axios from "axios";
+
+const URL = "https://api.openweathermap.org/data/2.5/weather?lat=19.54&lon=-96.88&exclude=hourly,daily&appid=e1a8068af58a90db438617c593ef93bb";
+
+axios.get(URL).then((result) => {
+    console.log(result.data.weather[0].main)
+})
 
 const options = {
     chart: {

@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
     day: {
@@ -20,12 +20,17 @@ const props = defineProps({
         type: String,
         default: "Clear"
     },
+    selected: {
+        type: Boolean,
+        default: false
+    },
 
 })
 
 const imageName = ref("src/assets/Clear.png")
 
-switch (props.weather) {
+onMounted(() => {
+    switch (props.weather) {
     case "Clear":
         imageName.value = "src/assets/" + "Clear" + ".png"
         break;
@@ -38,6 +43,8 @@ switch (props.weather) {
     default:
         break;
 }
+})
+
 
 const clicked = ref(false)
 
