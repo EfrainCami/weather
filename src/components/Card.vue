@@ -1,6 +1,6 @@
 <template>
-    <div @click="click" class="flex flex-col items-center p-4 rounded-xl cursor-pointer "
-        :class="{ 'bg-blue-500': clicked }">
+    <div class="flex flex-col items-center p-4 rounded-xl cursor-pointer"
+        :class="{ 'bg-blue-500': clicked, 'bg-gray-100': !clicked }">
         <p class="font-bold" :class="{ 'text-white': clicked, 'text-black': !clicked }">{{ day }}</p>
         <img class="h-10 m-6" :src="imageName" alt="Weather">
         <p :class="{ 'text-white': clicked, 'text-black': !clicked }">Humidity</p>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUpdated } from 'vue';
 
 const props = defineProps({
     day: {
@@ -25,9 +25,17 @@ const props = defineProps({
         default: false
     },
     humidity: {
-        type: String,
-        default: "0%"
+        type: Number,
+        default: 0
     },
+    id: {
+        type: Number,
+        default: 0
+    },
+    indexClicked: {
+        type: Number,
+        default: 99
+    }
 })
 
 const imageName = ref("src/assets/Clear.png")
@@ -50,10 +58,9 @@ onMounted(() => {
 
 
 const clicked = ref(false)
-
-const click = () => {
-    clicked.value = !clicked.value
-    console.log("hola")
-}
+onUpdated(() => {
+    clicked.value = props.id === props.indexClicked
+    console.log("clicked " + clicked.value + " id " + props.id + "indexClicked" + props.indexClicked)
+})
 
 </script>

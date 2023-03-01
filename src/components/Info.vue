@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col space-y-4 justify-center items-center">
-        <p>Xalapa, Ver</p>
-        <p>12:44 PM, Mon, Feb 27, 2023</p>
+        <p>{{ city }}</p>
+        <p>{{ date }}</p>
         <div class="flex justify-center items-center">
             <img :src="imageName" alt="">
             <p class="text-5xl font-bold">{{ temperature }}</p>
@@ -9,17 +9,21 @@
         </div>
         <p class="text-5xl font-bold">{{ weather }}</p>
         <div class="m-6 flex space-x-4">
-            <Stat name="Humidity" :amount="humidity"/>
-            <Stat name="Wind Speed" :amount="windspeed"/>
+            <Stat name="Humidity" :amount="humidity" />
+            <Stat name="Wind Speed" :amount="windspeed" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onUpdated } from 'vue';
 import Stat from "./Stat.vue";
 
 const props = defineProps({
+    date: {
+        type: String,
+        default: "0000-00-00"
+    },
     weather: {
         type: String,
         default: "Clear"
@@ -35,24 +39,30 @@ const props = defineProps({
     temperature: {
         type: Number,
         default: 0
+    },
+    city: {
+        type: String,
+        default: "---"
     }
 })
 
 const imageName = ref("src/assets/Clear.png")
 
-onMounted(() => {
+onUpdated(() => {
     switch (props.weather) {
-    case "Clear":
-        imageName.value = "src/assets/" + "Clear" + ".png"
-        break;
-    case "Clouds":
-        imageName.value = "src/assets/" + "Clouds" + ".png"
-        break;
-    case "Rainy":
-        imageName.value = "src/assets/" + "Rain" + ".png"
-        break;
-    default:
-        break;
-}
+        case "Clear":
+            imageName.value = "src/assets/" + "Clear" + ".png"
+            break;
+        case "Clouds":
+            imageName.value = "src/assets/" + "Clouds" + ".png"
+            break;
+        case "Rainy":
+            imageName.value = "src/assets/" + "Rain" + ".png"
+            break;
+        default:
+            break;
+    }    
 })
+
+
 </script>

@@ -1,16 +1,16 @@
 <template>
-    <div class="flex p-4 h-full rounded-xl bg-white">
+    <div class="flex p-4 rounded-xl bg-white">
         <div class="flex flex-col mt-10 items-center w-1/2 space-y-3">
             <Search></Search>
             <!-- Notar que para los atributos dinámicos no hace falta el .value -->
-            <Info :weather="weather" :humidity="humidity" :windspeed="windspeed" :temperature="temperature"></Info>
+            <Info :city="city" :date="date" :weather="weather" :humidity="humidity" :windspeed="windspeed" :temperature="temperature"></Info>
         </div>
         <div class="w-full">
             <div class="flex items-center justify-center">
                 <apexchart width="900" height="300" type="area" :options="options" :series="series"></apexchart>
             </div>
             <div class="grid grid-cols-4 space-x-3">
-                <Card v-for = "(forecast, index) in forecastArray" :key="index" day="Today" :weather="forecast.weather[0].main" :humidity="forecast.main.humidity"></Card>
+                <Card @:click="showInfo(index)" v-for = "(forecast, index) in forecastArray" :key="index" day="Today" :id="index" :weather="forecast.weather[0].main" :humidity="forecast.main.humidity" :indexClicked="indexClicked"></Card>
             </div>
         </div>
     </div>
@@ -24,21 +24,33 @@ import axios from "axios";
 
 import { ref, onMounted } from 'vue';
 
-const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.54&lon=-96.88&cnt=4&units=metric&appid=e1a8068af58a90db438617c593ef93bb";
+const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.52&lon=-96.93&cnt=4&units=metric&appid=e1a8068af58a90db438617c593ef93bb";
 
 const weather = ref("--")
 const humidity = ref("--")
 const windspeed = ref("--")
+const date = ref("--")
 const temperature = ref(0)
+const city = ref("--")
+
+const indexClicked = ref(0)
 
 let forecastArray = null
 
+const showInfo = (id) =>{
+    weather.value = forecastArray[id].weather[0].main
+    humidity.value = (forecastArray[id].main.humidity) + "%"
+    windspeed.value = (forecastArray[id].wind.speed) + " km/h"
+    temperature.value = forecastArray[id].main.temp
+    date.value = forecastArray[id].dt_txt
+
+    indexClicked.value = id
+}
+
 axios.get(URL).then((result) => {
     forecastArray = result.data.list
-    weather.value = result.data.list[0].weather[0].main;
-    humidity.value = (result.data.list[0].main.humidity) + "%"
-    windspeed.value = (result.data.list[0].wind.speed) + " km/h"
-    temperature.value = result.data.list[0].main.temp
+    city.value = result.data.city.name
+    showInfo(0)
     console.log(result.data)
 })
 
