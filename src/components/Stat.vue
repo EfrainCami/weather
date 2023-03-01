@@ -13,8 +13,8 @@ const props = defineProps({
         default: "stat"
     },
     amount: {
-        type: String,
-        default: "000"
+        type: Number,
+        default: 0
     }
 })
 </script>

@@ -2,7 +2,8 @@
     <div class="flex rounded-xl p-4 h-full bg-white">
         <div class="flex flex-col mt-10 items-center w-1/2 space-y-3">
             <Search></Search>
-            <Info></Info>
+            <!-- Notar que para los atributos dinámicos no hace falta el .value -->
+            <Info :weather="weather" :humidity="humidity" :windspeed="windspeed" :temperature="temperature"></Info>
         </div>
         <div class="w-full">
             <div class="flex items-center justify-center">
@@ -24,10 +25,21 @@ import Info from "./Info.vue"
 import Search from "./Search.vue";
 import axios from "axios";
 
-const URL = "https://api.openweathermap.org/data/2.5/weather?lat=19.54&lon=-96.88&exclude=hourly,daily&appid=e1a8068af58a90db438617c593ef93bb";
+import { ref, onMounted } from 'vue';
+
+const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.54&lon=-96.88&cnt=4&units=metric&appid=e1a8068af58a90db438617c593ef93bb";
+
+const weather = ref("--")
+const humidity = ref("--")
+const windspeed = ref("--")
+const temperature = ref(0)
 
 axios.get(URL).then((result) => {
-    console.log(result.data.weather[0].main)
+    weather.value = result.data.list[0].weather[0].main;
+    humidity.value = (result.data.list[0].main.humidity) + "%"
+    windspeed.value = (result.data.list[0].wind.speed) + " km/h"
+    temperature.value = result.data.list[0].main.temp
+    console.log(result.data)
 })
 
 const options = {

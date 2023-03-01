@@ -24,7 +24,6 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-
 })
 
 const imageName = ref("src/assets/Clear.png")
