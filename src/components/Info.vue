@@ -3,7 +3,7 @@
         <p>Xalapa, Ver</p>
         <p>12:44 PM, Mon, Feb 27, 2023</p>
         <div class="flex justify-center items-center">
-            <img src="../assets/Clear.png" alt="">
+            <img :src="imageName" alt="">
             <p class="text-5xl font-bold">{{ temperature }}</p>
             <sup class="font-bold text-xl">°C</sup>
         </div>
@@ -16,6 +16,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import Stat from "./Stat.vue";
 
 const props = defineProps({
@@ -35,5 +36,23 @@ const props = defineProps({
         type: Number,
         default: 0
     }
+})
+
+const imageName = ref("src/assets/Clear.png")
+
+onMounted(() => {
+    switch (props.weather) {
+    case "Clear":
+        imageName.value = "src/assets/" + "Clear" + ".png"
+        break;
+    case "Clouds":
+        imageName.value = "src/assets/" + "Clouds" + ".png"
+        break;
+    case "Rainy":
+        imageName.value = "src/assets/" + "Rain" + ".png"
+        break;
+    default:
+        break;
+}
 })
 </script>
