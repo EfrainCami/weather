@@ -1,5 +1,5 @@
 <template>
-    <div class="flex rounded-xl p-4 h-full bg-white">
+    <div class="flex p-4 h-full rounded-xl bg-white">
         <div class="flex flex-col mt-10 items-center w-1/2 space-y-3">
             <Search></Search>
             <!-- Notar que para los atributos dinámicos no hace falta el .value -->
@@ -10,10 +10,7 @@
                 <apexchart width="900" height="300" type="area" :options="options" :series="series"></apexchart>
             </div>
             <div class="grid grid-cols-4 space-x-3">
-                <Card day="Today" weather="Clear"></Card>
-                <Card day="Feb 28" weather="Clouds"></Card>
-                <Card day="Mar 1" weather="Rainy"></Card>
-                <Card day="Mar 2" weather="Clear"></Card>
+                <Card v-for = "(forecast, index) in forecastArray" :key="index" day="Today" :weather="forecast.weather[0].main" :humidity="forecast.main.humidity"></Card>
             </div>
         </div>
     </div>
@@ -34,7 +31,10 @@ const humidity = ref("--")
 const windspeed = ref("--")
 const temperature = ref(0)
 
+let forecastArray = null
+
 axios.get(URL).then((result) => {
+    forecastArray = result.data.list
     weather.value = result.data.list[0].weather[0].main;
     humidity.value = (result.data.list[0].main.humidity) + "%"
     windspeed.value = (result.data.list[0].wind.speed) + " km/h"

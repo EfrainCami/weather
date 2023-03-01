@@ -4,7 +4,7 @@
         <p class="font-bold" :class="{ 'text-white': clicked, 'text-black': !clicked }">{{ day }}</p>
         <img class="h-10 m-6" :src="imageName" alt="Weather">
         <p :class="{ 'text-white': clicked, 'text-black': !clicked }">Humidity</p>
-        <p :class="{ 'text-white': clicked, 'text-black': !clicked }">35%</p>
+        <p :class="{ 'text-white': clicked, 'text-black': !clicked }">{{ humidity }}%</p>
     </div>
 </template>
 
@@ -23,6 +23,10 @@ const props = defineProps({
     selected: {
         type: Boolean,
         default: false
+    },
+    humidity: {
+        type: String,
+        default: "0%"
     },
 })
 
