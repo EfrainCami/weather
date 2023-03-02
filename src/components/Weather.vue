@@ -14,7 +14,7 @@
     </div>
     <div class="w-full">
       <div class="flex items-center justify-center">
-        <Chart></Chart>
+        <Chart :hoursWithTemperatures="hoursWithTemperatures"></Chart>
       </div>
       <div class="grid grid-cols-4 space-x-3">
         <Card
@@ -28,6 +28,9 @@
           :indexClicked="indexClicked"
           :temperatures="daysTemperatures[index]"
           :hours="daysHours[index]"
+          @hoursWithTemperatures="
+            (hoursWithTemps) => (hoursWithTemperatures = hoursWithTemps)
+          "
         />
       </div>
     </div>
@@ -41,12 +44,10 @@ import Search from "./Search.vue";
 import axios from "axios";
 import Chart from "./Chart.vue";
 
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUpdated } from "vue";
 
-const URL =
-  "https://api.openweathermap.org/data/2.5/forecast?lat=19.52&lon=-96.93&cnt=4&units=metric&appid=e1a8068af58a90db438617c593ef93bb";
 const newURL =
-  "https://api.openweathermap.org/data/2.5/forecast?q=Monterrey&units=metric&cnt=32&appid=e1a8068af58a90db438617c593ef93bb";
+  "https://api.openweathermap.org/data/2.5/forecast?q=Xalapa&units=metric&cnt=32&appid=e1a8068af58a90db438617c593ef93bb";
 
 const weather = ref("--");
 const humidity = ref("--");
@@ -55,19 +56,11 @@ const date = ref("--");
 const temperature = ref(0);
 const city = ref("--");
 
+const hoursWithTemperatures = ref([]);
+
 const indexClicked = ref(0);
 
 let forecastArray = [];
-
-const showInfo = (id) => {
-  weather.value = forecastArray[id].weather[0].main;
-  humidity.value = forecastArray[id].main.humidity + "%";
-  windspeed.value = forecastArray[id].wind.speed + " km/h";
-  temperature.value = forecastArray[id].main.temp;
-  date.value = forecastArray[id].dt_txt;
-
-  indexClicked.value = id;
-};
 
 let dayOneTemps = [];
 let dayTwoTemps = [];
@@ -83,35 +76,46 @@ let dayFourHours = [];
 
 let daysHours = [];
 
-axios.get(newURL).then((result) => {
+onMounted(() => {
+  axios.get(newURL).then((result) => {
+    populateTemperatures(result);
+    city.value = result.data.city.name;
+    showInfo(0);
+  });
+});
+
+const populateTemperatures = (result) => {
   for (let i = 0; i <= 24; i += 8) {
     forecastArray.push(result.data.list[i]);
   }
-
   for (let i = 0; i < 32; i++) {
     if (i <= 7) {
       dayOneTemps.push(result.data.list[i].main.temp);
-      dayOneHours.push(result.data.list[i].dt_txt)
+      dayOneHours.push(result.data.list[i].dt_txt);
     } else if (i <= 15) {
       dayTwoTemps.push(result.data.list[i].main.temp);
-      dayTwoHours.push(result.data.list[i].dt_txt)
+      dayTwoHours.push(result.data.list[i].dt_txt);
     } else if (i <= 23) {
       dayThreeTemps.push(result.data.list[i].main.temp);
-      dayThreeHours.push(result.data.list[i].dt_txt)
+      dayThreeHours.push(result.data.list[i].dt_txt);
     } else {
       dayFourTemps.push(result.data.list[i].main.temp);
-      dayFourHours.push(result.data.list[i].dt_txt)
+      dayFourHours.push(result.data.list[i].dt_txt);
     }
   }
-
   daysTemperatures = [dayOneTemps, dayTwoTemps, dayThreeTemps, dayFourTemps];
-  daysHours = [dayOneHours, dayTwoHours, dayThreeHours, dayFourHours]
+  daysHours = [dayOneHours, dayTwoHours, dayThreeHours, dayFourHours];
+};
 
+const showInfo = (id) => {
+  weather.value = forecastArray[id].weather[0].main;
+  humidity.value = forecastArray[id].main.humidity + "%";
+  windspeed.value = forecastArray[id].wind.speed + " km/h";
+  temperature.value = forecastArray[id].main.temp;
+  date.value = forecastArray[id].dt_txt;
 
+  indexClicked.value = id;
+};
 
-  city.value = result.data.city.name;
-  showInfo(0);
-  console.log(result.data);
-  console.log(daysHours);
-});
+console.log(hoursWithTemperatures._value);
 </script>
