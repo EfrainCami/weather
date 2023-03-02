@@ -7,7 +7,8 @@
         </div>
         <div class="w-full">
             <div class="flex items-center justify-center">
-                <apexchart width="900" height="300" type="area" :options="options" :series="series"></apexchart>
+                <Chart></Chart>
+                
             </div>
             <div class="grid grid-cols-4 space-x-3">
                 <Card @:click="showInfo(index)" v-for = "(forecast, index) in forecastArray" :key="index" day="Today" :id="index" :weather="forecast.weather[0].main" :humidity="forecast.main.humidity" :indexClicked="indexClicked"></Card>
@@ -21,10 +22,12 @@ import Card from "./Card.vue";
 import Info from "./Info.vue"
 import Search from "./Search.vue";
 import axios from "axios";
+import Chart from "./Chart.vue"
 
 import { ref, onMounted } from 'vue';
 
 const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.52&lon=-96.93&cnt=4&units=metric&appid=e1a8068af58a90db438617c593ef93bb";
+const newURL = "https://api.openweathermap.org/data/2.5/forecast?q=Xalapa&units=metric&cnt=32&appid=e1a8068af58a90db438617c593ef93bb";
 
 const weather = ref("--")
 const humidity = ref("--")
@@ -35,7 +38,7 @@ const city = ref("--")
 
 const indexClicked = ref(0)
 
-let forecastArray = null
+let forecastArray = []
 
 const showInfo = (id) =>{
     weather.value = forecastArray[id].weather[0].main
@@ -47,34 +50,15 @@ const showInfo = (id) =>{
     indexClicked.value = id
 }
 
-axios.get(URL).then((result) => {
-    forecastArray = result.data.list
+axios.get(newURL).then((result) => {
+    for (let i = 0; i <= 24; i+=8) {
+        forecastArray.push(result.data.list[i]) 
+    }
     city.value = result.data.city.name
     showInfo(0)
     console.log(result.data)
+    
 })
 
-const options = {
-    chart: {
-        id: 'vuechart-example',
-        toolbar: {
-            show: false,
-        }
-    },
-    title: {
-        text: 'Temperature',
-        align: 'left'
-    },
-    dataLabels: {
-        enabled: false
-    },
-    xaxis: {
-        categories: ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00"],
-    },
-}
 
-const series = [{
-    name: 'series-1',
-    data: [20, 20, 30, 32, 30, 30, 25],
-}]
 </script>

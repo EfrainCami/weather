@@ -60,7 +60,6 @@ onMounted(() => {
 const clicked = ref(false)
 onUpdated(() => {
     clicked.value = props.id === props.indexClicked
-    console.log("clicked " + clicked.value + " id " + props.id + "indexClicked" + props.indexClicked)
 })
 
 </script>
