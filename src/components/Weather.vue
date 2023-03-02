@@ -27,7 +27,7 @@ import Chart from "./Chart.vue"
 import { ref, onMounted } from 'vue';
 
 const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.52&lon=-96.93&cnt=4&units=metric&appid=e1a8068af58a90db438617c593ef93bb";
-const newURL = "https://api.openweathermap.org/data/2.5/forecast?q=Xalapa&units=metric&cnt=32&appid=e1a8068af58a90db438617c593ef93bb";
+const newURL = "https://api.openweathermap.org/data/2.5/forecast?q=Monterrey&units=metric&cnt=32&appid=e1a8068af58a90db438617c593ef93bb";
 
 const weather = ref("--")
 const humidity = ref("--")
@@ -50,13 +50,34 @@ const showInfo = (id) =>{
     indexClicked.value = id
 }
 
+let dayOneTemps = []
+let dayTwoTemps = []
+let dayThreeTemps = []
+let dayFourTemps = []
+
 axios.get(newURL).then((result) => {
     for (let i = 0; i <= 24; i+=8) {
         forecastArray.push(result.data.list[i]) 
     }
+
+    for (let i = 0; i < 32; i++) {
+        if (i <= 7) {
+            dayOneTemps.push(result.data.list[i].main.temp)    
+        } else if (i <= 15){
+            dayTwoTemps.push(result.data.list[i].main.temp)    
+        } else if (i <= 23){
+            dayThreeTemps.push(result.data.list[i].main.temp)    
+        } else {
+            dayFourTemps.push(result.data.list[i].main.temp)    
+        }
+    }
     city.value = result.data.city.name
     showInfo(0)
     console.log(result.data)
+    console.log(dayOneTemps)
+    console.log(dayTwoTemps)
+    console.log(dayThreeTemps)
+    console.log(dayFourTemps)
     
 })
 
