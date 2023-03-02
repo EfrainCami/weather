@@ -39,6 +39,10 @@ const props = defineProps({
     temperatures: {
         type: Array,
         default: []
+    },
+    hours: {
+        type: Array,
+        default: []
     }
 })
 
@@ -60,7 +64,7 @@ onMounted(() => {
 }
 
 console.log("card " + props.id + ":")
-console.log(props.temperatures)
+console.log(props.hours)
 })
 
 

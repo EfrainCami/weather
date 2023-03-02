@@ -27,6 +27,7 @@
           :humidity="forecast.main.humidity"
           :indexClicked="indexClicked"
           :temperatures="daysTemperatures[index]"
+          :hours="daysHours[index]"
         />
       </div>
     </div>
