@@ -24,7 +24,7 @@ import axios from "axios";
 
 import { ref, onMounted } from 'vue';
 
-const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.52&lon=-96.93&cnt=4&units=metric&appid=0c5a1a43510d752c2001201ac1dae836";
+const URL = "https://api.openweathermap.org/data/2.5/forecast?lat=19.52&lon=-96.93&cnt=4&units=metric&appid=0f8cd8fa1233b802a450969825871530";
 
 const weather = ref("--")
 const humidity = ref("--")
