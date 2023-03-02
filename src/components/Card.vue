@@ -58,6 +58,9 @@ onMounted(() => {
     default:
         break;
 }
+
+console.log("card " + props.id + ":")
+console.log(props.temperatures)
 })
 
 

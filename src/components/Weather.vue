@@ -11,7 +11,7 @@
                 
             </div>
             <div class="grid grid-cols-4 space-x-3">
-                <Card @:click="showInfo(index)" v-for = "(forecast, index) in forecastArray" :key="index" day="Today" :id="index" :weather="forecast.weather[0].main" :humidity="forecast.main.humidity" :indexClicked="indexClicked"></Card>
+                <Card @:click="showInfo(index)" v-for = "(forecast, index) in forecastArray" :key="index" day="Today" :id="index" :weather="forecast.weather[0].main" :humidity="forecast.main.humidity" :indexClicked="indexClicked" :temperatures="daysTemperatures[index]"></Card>
             </div>
         </div>
     </div>
