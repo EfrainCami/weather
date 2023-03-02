@@ -55,6 +55,8 @@ let dayTwoTemps = []
 let dayThreeTemps = []
 let dayFourTemps = []
 
+let daysTemperatures = []
+
 axios.get(newURL).then((result) => {
     for (let i = 0; i <= 24; i+=8) {
         forecastArray.push(result.data.list[i]) 
@@ -71,6 +73,8 @@ axios.get(newURL).then((result) => {
             dayFourTemps.push(result.data.list[i].main.temp)    
         }
     }
+
+    daysTemperatures = [dayOneTemps, dayTwoTemps, dayThreeTemps, dayFourTemps]
     city.value = result.data.city.name
     showInfo(0)
     console.log(result.data)
@@ -78,6 +82,7 @@ axios.get(newURL).then((result) => {
     console.log(dayTwoTemps)
     console.log(dayThreeTemps)
     console.log(dayFourTemps)
+    console.log(daysTemperatures)
     
 })
 

@@ -35,6 +35,10 @@ const props = defineProps({
     indexClicked: {
         type: Number,
         default: 99
+    },
+    temperatures: {
+        type: Array,
+        default: []
     }
 })
 
