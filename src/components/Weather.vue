@@ -29,7 +29,7 @@
           :temperatures="daysTemperatures[index]"
           :hours="daysHours[index]"
           @hoursWithTemperatures="
-            (hoursWithTemps) => (hoursWithTemperatures = hoursWithTemps)
+            (hoursWithTemps) => hoursWithTemperatures = hoursWithTemps
           "
         />
       </div>
@@ -117,5 +117,10 @@ const showInfo = (id) => {
   indexClicked.value = id;
 };
 
-console.log(hoursWithTemperatures._value);
+const updateChart = (hoursWithTemps) => {
+    
+    hoursWithTemperatures.value = hoursWithTemps 
+}
+
+console.log(forecastArray);
 </script>

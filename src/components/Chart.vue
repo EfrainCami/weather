@@ -17,8 +17,8 @@ const props = defineProps({
   hoursWithTemperatures: {
     type: Array,
     default: [
-      [1, 2, 3, 4, 5, 6, 7, 8],
-      [1, 2, 3, 4, 5, 6, 7, 8],
+      [1, 2, 3, 4, 5, 6, 7, 8], 
+      [1, 2, 3, 4, 5, 6, 7, 8], 
     ],
   },
 });
@@ -42,14 +42,15 @@ options = {
   xaxis: {
     categories: props.hoursWithTemperatures[0],
   },
-};
+}
+ 
 series = [
   {
     name: "series-1",
     data: props.hoursWithTemperatures[1],
   },
-]; 
-
+] 
+ 
 onUpdated(() => {
     options.xaxis.categories = props.hoursWithTemperatures[0]
     series[0].data = props.hoursWithTemperatures[1]
